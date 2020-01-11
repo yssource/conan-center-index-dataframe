@@ -10,5 +10,5 @@ if [[ "$(uname -s)" == 'Darwin' ]]; then
     pyenv activate conan
 fi
 
-conan create ./all dataframe/1.5.0@
+conan create ./all dataframe/1.6.0@
 

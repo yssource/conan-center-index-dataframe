@@ -6,7 +6,7 @@ environment:
     PYTHON_ARCH: "64"
     matrix:
         - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
-          CONAN_VISUAL_VERSIONS: 15
+          CONAN_VISUAL_VERSIONS: 16
 
 install:
   - set PATH=%PATH%;%PYTHON%/Scripts/
@@ -15,4 +15,4 @@ install:
   - conan user # It creates the conan data directory
 
 test_script:
-  - conan create ./all dataframe/1.5.0@
+  - conan create ./all dataframe/1.6.0@
