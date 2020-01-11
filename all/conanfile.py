@@ -50,9 +50,9 @@ class DataFrameConan(ConanFile):
         compiler = self.settings.compiler
         if (
             compiler == "Visual Studio"
-            and Version(self.settings.compiler.version) < "16"
+            and Version(self.settings.compiler.version) < "15"
         ):
-            raise ConanInvalidConfiguration("DataFrame requires Visual Studio >= 16")
+            raise ConanInvalidConfiguration("DataFrame requires Visual Studio >= 15")
         if (
             (compiler == "gcc" and version < "7")
             or (compiler == "clang" and version < "6")
