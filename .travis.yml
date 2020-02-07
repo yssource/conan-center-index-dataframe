@@ -1,7 +1,7 @@
 dist: bionic
 env:
    global:
-     - CONAN_VERSION: "1.6.0"
+     - CONAN_VERSION: "1.7.0"
     
 linux: &linux
    os: linux
@@ -24,7 +24,7 @@ matrix:
         # env: CONAN_CLANG_VERSIONS=6.0 CONAN_DOCKER_IMAGE=conanio/clang60
       - <<: *osx
         osx_image: xcode10
-        env: CONAN_APPLE_CLANG_VERSIONS=10.1 CONAN_VERSION=1.6.0
+        env: CONAN_APPLE_CLANG_VERSIONS=10.1 CONAN_VERSION=1.7.0
 
 install:
   - chmod +x .ci/install.sh
