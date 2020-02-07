@@ -10,8 +10,6 @@ int main(int argc, char *argv[]) {
   MyDataFrame::set_thread_level(10);
 
   MyDataFrame df;
-  std::vector<int> &col0 =
-      df.create_column<int>(static_cast<const char *>("col_name"));
 
   std::vector<int> intvec = {1, 2, 3, 4, 5};
   std::vector<double> dblvec = {1.2345, 2.2345, 3.2345, 4.2345, 5.2345};

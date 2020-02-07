@@ -48,9 +48,6 @@ class DataFrameConan(ConanFile):
         compiler = self.settings.compiler
 
         if compiler == "Visual Studio":
-            # remove runtime, use always default (MD/MDd)
-            del self.settings.compiler.runtime
-
             if Version(self.settings.compiler.version) < "15":
                 raise ConanInvalidConfiguration(
                     "DataFrame requires Visual Studio >= 15"

@@ -4,8 +4,6 @@ project(test_package CXX)
 include(${CMAKE_BINARY_DIR}/conanbuildinfo.cmake)
 conan_basic_setup()
 
-# add_definitions(-DLIBRARY_EXPORTS)
-
 if(MSVC)
   add_definitions(-DLIBRARY_EXPORTS)
 endif()
