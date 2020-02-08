@@ -1,16 +1,17 @@
-From 43b067ec68c64c9137c57a6e23f6af37a49b9c9f Mon Sep 17 00:00:00 2001
+From d097f48655c90a1e0242cab0c18db0d7266f90e0 Mon Sep 17 00:00:00 2001
 From: "Jimmy M. Gong" <jimmy.m.gong@gmail.com>
 Date: Fri, 7 Feb 2020 12:46:18 +0800
 Subject: [PATCH] patch for conan, remove tests
 
 ---
- CMakeLists.txt                            | 146 ----------------------
- include/DataFrame/Utils/FixedSizeString.h |   2 +-
- include/DataFrame/Vectors/HeteroVector.h  |   2 +-
- include/DataFrame/Vectors/HeteroView.h    |   2 +-
- include/DataFrame/Vectors/VectorPtrView.h |   2 +-
- include/DataFrame/Vectors/VectorView.h    |   2 +-
- 6 files changed, 5 insertions(+), 151 deletions(-)
+ CMakeLists.txt                              | 146 --------------------
+ include/DataFrame/Utils/FixedSizeString.h   |   2 +-
+ include/DataFrame/Utils/ThreadGranularity.h |   4 +-
+ include/DataFrame/Vectors/HeteroVector.h    |   2 +-
+ include/DataFrame/Vectors/HeteroView.h      |   2 +-
+ include/DataFrame/Vectors/VectorPtrView.h   |   2 +-
+ include/DataFrame/Vectors/VectorView.h      |   2 +-
+ 7 files changed, 7 insertions(+), 153 deletions(-)
 
 diff --git a/CMakeLists.txt b/CMakeLists.txt
 index 362bd95..b33ed49 100644
@@ -179,6 +180,21 @@ index 3195d67..fde6e5d 100644
  
  public:
  
+diff --git a/include/DataFrame/Utils/ThreadGranularity.h b/include/DataFrame/Utils/ThreadGranularity.h
+index f0d60da..a1cbbcb 100644
+--- a/include/DataFrame/Utils/ThreadGranularity.h
++++ b/include/DataFrame/Utils/ThreadGranularity.h
+@@ -79,8 +79,8 @@ protected:
+ 
+ private:
+ 
+-    static unsigned int         num_of_threads_;
+-    static const unsigned int   supported_threads_;
++    static inline unsigned int         num_of_threads_;
++    static inline const unsigned int   supported_threads_;
+ };
+ 
+ // ----------------------------------------------------------------------------
 diff --git a/include/DataFrame/Vectors/HeteroVector.h b/include/DataFrame/Vectors/HeteroVector.h
 index 978f823..97dcd1d 100644
 --- a/include/DataFrame/Vectors/HeteroVector.h
