@@ -44,20 +44,40 @@ class DataFrameConan(ConanFile):
             del self.options.fPIC
 
     def configure(self):
-        version = tools.Version(self.settings.compiler.version)
-        compiler = self.settings.compiler
+        compiler = str(self.settings.compiler)
+        compiler_version = tools.Version(self.settings.compiler.version)
 
-        if compiler == "Visual Studio":
-            if Version(self.settings.compiler.version) < "15":
-                raise ConanInvalidConfiguration(
-                    "DataFrame requires Visual Studio >= 15"
+        if self.settings.compiler.cppstd:
+            tools.check_min_cppstd(self, "17")
+        else:
+            self.output.warn(
+                "{} recipe lacks information about the {} compiler"
+                " standard version support".format(self.name, compiler)
+            )
+
+        minimal_version = {
+            "Visual Studio": "15",
+            "gcc": "7.3",
+            "clang": "6",
+            "apple-clang": "9.0",
+        }
+
+        if compiler not in minimal_version:
+            self.output.info(
+                "{} requires a compiler that supports at least"
+                " C++17".format(self.name)
+            )
+            return
+
+        # Exclude compilers not supported by cpp-taskflow
+        if compiler_version < minimal_version[compiler]:
+            raise ConanInvalidConfiguration(
+                "{} requires a compiler that supports"
+                " at least C++17. {} {} is not"
+                " supported.".format(
+                    self.name, compiler, Version(self.settings.compiler.version.value)
                 )
-        if (
-            (compiler == "gcc" and version < "7")
-            or (compiler == "clang" and version < "6")
-            or (compiler == "apple-clang" and version < "9")
-        ):
-            raise ConanInvalidConfiguration("DataFrame v1.7.0 requires at least C++17")
+            )
 
     def _configure_cmake(self):
         cmake = CMake(self)
@@ -81,6 +101,16 @@ class DataFrameConan(ConanFile):
         cmake = self._configure_cmake()
         cmake.install()
 
+        if self.options.shared:
+            self.copy("*.so*", dst="lib", symlinks=True, keep_path=False)
+            self.copy("*.dylib", dst="lib", symlinks=True, keep_path=False)
+            self.copy("*.dll", dst="bin", keep_path=False)
+            # do not forget import libraries
+            self.copy("*.lib", dst="lib", keep_path=False)
+        else:
+            self.copy("*.a", dst="lib", keep_path=False)
+            self.copy("*.lib", dst="lib", keep_path=False)
+
         # Remove packaging files & MS runtime files
         for dir_to_remove in [
             os.path.join("lib", "cmake"),
@@ -96,3 +126,6 @@ class DataFrameConan(ConanFile):
         # in linux we need to link also with these libs
         if self.settings.os == "Linux":
             self.cpp_info.system_libs.extend(["pthread", "dl", "rt"])
+
+        if self.settings.compiler == "Visual Studio" and self.options.shared:
+            self.cpp_info.defines.append("LIBRARY_EXPORTS")
