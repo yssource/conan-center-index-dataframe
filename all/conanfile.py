@@ -126,6 +126,3 @@ class DataFrameConan(ConanFile):
         # in linux we need to link also with these libs
         if self.settings.os == "Linux":
             self.cpp_info.system_libs.extend(["pthread", "dl", "rt"])
-
-        if self.settings.compiler == "Visual Studio" and self.options.shared:
-            self.cpp_info.defines.append("LIBRARY_EXPORTS")
