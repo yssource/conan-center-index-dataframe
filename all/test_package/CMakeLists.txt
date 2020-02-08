@@ -4,9 +4,9 @@ project(test_package CXX)
 include(${CMAKE_BINARY_DIR}/conanbuildinfo.cmake)
 conan_basic_setup()
 
-if(MSVC)
-  add_definitions(-DLIBRARY_EXPORTS)
-endif()
+# if(MSVC)
+#   add_definitions(-DLIBRARY_EXPORTS)
+# endif()
 
 add_executable(${PROJECT_NAME} test_package.cpp)
 target_link_libraries(${PROJECT_NAME} ${CONAN_LIBS})
