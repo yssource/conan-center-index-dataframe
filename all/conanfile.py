@@ -61,6 +61,12 @@ class DataFrameConan(ConanFile):
 
     def _configure_cmake(self):
         cmake = CMake(self)
+        if (
+            self.settings.os == "Windows"
+            and self.settings.compiler == "Visual Studio"
+            and self.options.shared
+        ):
+            cmake.definitions["CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS"] = True
         cmake.configure()
         return cmake
 
