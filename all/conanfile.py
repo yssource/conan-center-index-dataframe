@@ -47,34 +47,37 @@ class DataFrameConan(ConanFile):
         compiler = str(self.settings.compiler)
         compiler_version = tools.Version(self.settings.compiler.version)
 
+        if compiler == "Visual Studio" and self.options.shared:
+            raise ConanInvalidConfiguration(
+                "Could not support this specific configuration. Try static."
+            )
+
         if self.settings.compiler.cppstd:
             tools.check_min_cppstd(self, "17")
         else:
             self.output.warn(
-                "{} recipe lacks information about the {} compiler"
-                " standard version support".format(self.name, compiler)
+                "{} recipe lacks information about the {} compiler standard version support".format(
+                    self.name, compiler
+                )
             )
 
         minimal_version = {
             "Visual Studio": "15",
-            "gcc": "7.3",
+            "gcc": "7",
             "clang": "6",
             "apple-clang": "9.0",
         }
 
         if compiler not in minimal_version:
             self.output.info(
-                "{} requires a compiler that supports at least"
-                " C++17".format(self.name)
+                "{} requires a compiler that supports at least C++17".format(self.name)
             )
             return
 
         # Exclude compilers not supported by cpp-taskflow
         if compiler_version < minimal_version[compiler]:
             raise ConanInvalidConfiguration(
-                "{} requires a compiler that supports"
-                " at least C++17. {} {} is not"
-                " supported.".format(
+                "{} requires a compiler that supports at least C++17. {} {} is not supported.".format(
                     self.name, compiler, Version(self.settings.compiler.version.value)
                 )
             )
