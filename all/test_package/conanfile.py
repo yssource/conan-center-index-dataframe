@@ -9,7 +9,6 @@ class DataFrameTestConan(ConanFile):
 
     def build(self):
         cmake = CMake(self)
-        cmake.definitions["TEST_SHARED_LIB"] = dict(self.options["dataframe"].items()).get("fPIC", True)
         cmake.configure()
         cmake.build()
 
